@@ -4,8 +4,8 @@ const totalHTML = document.getElementById("total");
 const btnFinalizar = document.getElementById("btn-finalizar");
 const btnLimpiar = document.getElementById("btn-limpiar");
 
-let carrito = [];
-let total = 0;
+let carrito = []; //Declaramos un carrito para agregar los productos.
+let total = 0; // Declaramos una variable total para guardar el total.
 
 function calcularTotal() {
   total = carrito.reduce((sum, item) => sum + item.precio * item.cantidad, 0);
