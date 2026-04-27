@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Café - Comandas</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header>
+    <h1>☕ Sistema de Comandas</h1>
+    <p>Seleccioná productos, armá la comanda y registrá la venta.</p>
+  </header>
+
+  <main>
+    <section class="panel productos-panel">
+      <h2>Productos</h2>
+      <div id="productos"></div>
+    </section>
+
+    <section class="panel carrito-panel">
+      <h2>🧾 Pedido</h2>
+      <ul id="carrito" class="carrito-list"></ul>
+      <div class="resumen">
+        <span>Total:</span>
+        <strong>$<span id="total">0</span></strong>
+      </div>
+      <button id="btn-finalizar" class="btn btn-primary">Finalizar Pedido</button>
+      <button id="btn-limpiar" class="btn btn-secondary">Limpiar Carrito</button>
+    </section>
+  </main>
+
+  <footer>
+    <a href="admin.html">Ver ventas del día</a>
+  </footer>
+
+  <script src="data/productos.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
