@@ -7,3 +7,5 @@ const productos = [
   { id: 6, nombre: "Promo Café + Medialuna", precio: 2000, categoria: "Promos" },
   { id: 7, nombre: "Promo Latte + Tostado", precio: 3000, categoria: "Promos" }
 ];
+
+window.productos = productos;

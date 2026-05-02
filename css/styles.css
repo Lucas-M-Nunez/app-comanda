@@ -10,9 +10,72 @@ body {
   padding: 20px;
 }
 
-header, footer {
-  text-align: center;
+.hidden {
+  display: none !important;
+}
+
+.login-overlay {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 10;
+}
+
+.login-card {
+  width: min(420px, calc(100% - 40px));
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 28px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.16);
+}
+
+.login-card h1 {
+  margin-top: 0;
+  font-size: 1.8rem;
+}
+
+.login-card label {
+  display: block;
+  margin-top: 16px;
+  font-weight: bold;
+}
+
+.login-card input,
+.login-card textarea,
+.login-card select {
+  width: 100%;
+  border: 1px solid #d8d8d8;
+  border-radius: 12px;
+  padding: 12px;
+  margin-top: 8px;
+}
+
+.login-note,
+.error-message,
+.info-text {
+  margin-top: 14px;
+  color: #5a5a5a;
+  font-size: 0.95rem;
+}
+
+.error-message {
+  color: #c0392b;
+}
+
+header,
+footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
   margin-bottom: 20px;
+}
+
+header div:first-child {
+  flex: 1;
 }
 
 h1 {
@@ -31,11 +94,17 @@ main {
   gap: 18px;
 }
 
+.admin-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 18px;
+}
+
 .panel {
   background: #ffffff;
   border-radius: 16px;
   padding: 18px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
 }
 
 #productos {
@@ -55,22 +124,27 @@ main {
 }
 
 .producto {
-  background: #fafafa;
-  border: 1px solid #e1e1e1;
+  background: linear-gradient(180deg, #fffaf3 0%, #ffffff 100%);
+  border: 1px solid #e7d2b3;
   border-radius: 14px;
-  padding: 14px;
+  padding: 16px;
   cursor: pointer;
-  transition: transform 0.15s ease, border-color 0.15s ease;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .producto:hover {
   transform: translateY(-2px);
-  border-color: #d0b47f;
+  border-color: #d3b07a;
+  box-shadow: 0 14px 24px rgba(0, 0, 0, 0.08);
+}
+
+.producto strong,
+.producto span {
+  display: block;
 }
 
 .producto strong {
-  display: block;
-  margin-top: 8px;
+  margin-top: 10px;
   color: #1a1a1a;
 }
 
@@ -78,15 +152,22 @@ main {
   list-style: none;
   margin: 0;
   padding: 0;
-  max-height: 360px;
+  max-height: 380px;
   overflow-y: auto;
 }
 
 .carrito-list li {
   display: flex;
   justify-content: space-between;
-  padding: 10px 0;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 0;
   border-bottom: 1px solid #ececec;
+}
+
+.carrito-list li div {
+  display: grid;
+  gap: 4px;
 }
 
 .carrito-list button {
@@ -94,6 +175,7 @@ main {
   border: none;
   color: #c0392b;
   cursor: pointer;
+  font-weight: bold;
 }
 
 .resumen {
@@ -127,16 +209,89 @@ main {
   color: #333;
 }
 
+.btn-small {
+  padding: 8px 10px;
+  font-size: 0.9rem;
+  margin-left: 8px;
+  width: auto;
+}
+
+.btn-danger {
+  color: #c0392b;
+}
+
 footer a {
-  display: inline-block;
-  margin-top: 10px;
   color: #8b5e34;
   text-decoration: none;
   font-weight: bold;
 }
 
+textarea,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="date"] {
+  width: 100%;
+  border: 1px solid #d8d8d8;
+  border-radius: 12px;
+  padding: 12px;
+  margin-top: 10px;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.user-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.ordenes-list {
+  display: grid;
+  gap: 14px;
+}
+
+.orden-card {
+  border: 1px solid #e5d8c3;
+  padding: 14px;
+  border-radius: 14px;
+  background: #fffaf1;
+}
+
+.orden-card header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.orden-card small {
+  color: #6b6b6b;
+}
+
+.orden-card .estado {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.admin-grid {
+  grid-template-columns: 1.2fr 0.8fr;
+}
+
+.producto-form {
+  display: grid;
+  gap: 10px;
+}
+
 @media (max-width: 900px) {
-  main {
+  main,
+  .admin-grid {
     grid-template-columns: 1fr;
   }
 }
