@@ -9,3 +9,6 @@ const productos = [
 ];
 
 window.productos = productos;
+
+
+//admin@cafe.com / Cafe123456

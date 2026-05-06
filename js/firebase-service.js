@@ -1,65 +1,98 @@
-function getUserProfile(uid) {
-  return db.collection("users").doc(uid).get();
+import { db } from "./firebase-config.js";
+
+import {
+  doc,
+  getDoc,
+  collection,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  onSnapshot,
+  query,
+  orderBy,
+  serverTimestamp,
+  getDocs,
+  where,
+  Timestamp,
+  writeBatch,
+} from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
+
+// 🔹 USER
+export function getUserProfile(uid) {
+  return getDoc(doc(db, "users", uid));
 }
 
-function onUserProfile(uid, callback) {
-  return db.collection("users").doc(uid).onSnapshot(callback);
+// 🔹 ESCUCHAR PERFIL
+export function onUserProfile(uid, callback) {
+  return onSnapshot(doc(db, "users", uid), callback);
 }
 
-function onProductosSnapshot(callback) {
-  return db.collection("productos").orderBy("categoria").onSnapshot(callback);
+// 🔹 PRODUCTOS
+export function onProductosSnapshot(callback) {
+  const q = query(collection(db, "productos"), orderBy("categoria"));
+  return onSnapshot(q, callback);
 }
 
-function addProducto(data) {
-  return db.collection("productos").add(data);
+export function addProducto(data) {
+  return addDoc(collection(db, "productos"), data);
 }
 
-function updateProducto(id, data) {
-  return db.collection("productos").doc(id).update(data);
+export function updateProducto(id, data) {
+  return updateDoc(doc(db, "productos", id), data);
 }
 
-function deleteProducto(id) {
-  return db.collection("productos").doc(id).delete();
+export function deleteProducto(id) {
+  return deleteDoc(doc(db, "productos", id));
 }
 
-function seedProductosIfEmpty(localProducts) {
-  return db.collection("productos").limit(1).get().then(snapshot => {
-    if (!snapshot.empty) return Promise.resolve();
-    const batch = db.batch();
-    localProducts.forEach(producto => {
-      const docRef = db.collection("productos").doc();
-      batch.set(docRef, {
-        nombre: producto.nombre,
-        precio: producto.precio,
-        categoria: producto.categoria,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      });
+// 🔹 SEED PRODUCTOS
+export async function seedProductosIfEmpty(localProducts) {
+  const snapshot = await getDocs(collection(db, "productos"));
+  if (!snapshot.empty) return;
+
+  const batch = writeBatch(db);
+
+  localProducts.forEach((producto) => {
+    const docRef = doc(collection(db, "productos"));
+    batch.set(docRef, {
+      nombre: producto.nombre,
+      precio: producto.precio,
+      categoria: producto.categoria,
+      createdAt: serverTimestamp(),
     });
-    return batch.commit();
   });
+
+  return batch.commit();
 }
 
-function onComandasSnapshot(callback) {
-  return db.collection("comandas").orderBy("fecha", "desc").onSnapshot(callback);
+// 🔹 COMANDAS
+export function onComandasSnapshot(callback) {
+  const q = query(collection(db, "comandas"), orderBy("fecha", "desc"));
+  return onSnapshot(q, callback);
 }
 
-function addComanda(data) {
-  return db.collection("comandas").add(data);
+export function addComanda(data) {
+  return addDoc(collection(db, "comandas"), data);
 }
 
-function updateComandaStatus(id, status) {
-  return db.collection("comandas").doc(id).update({
+export function updateComandaStatus(id, status) {
+  return updateDoc(doc(db, "comandas", id), {
     estado: status,
-    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    updatedAt: serverTimestamp(),
   });
 }
 
-function getComandasByDate(dateString) {
+// 🔹 COMANDAS POR FECHA
+export function getComandasByDate(dateString) {
   const start = new Date(dateString + "T00:00:00");
   const end = new Date(dateString + "T23:59:59");
-  return db.collection("comandas")
-    .where("fecha", ">=", firebase.firestore.Timestamp.fromDate(start))
-    .where("fecha", "<=", firebase.firestore.Timestamp.fromDate(end))
-    .orderBy("fecha", "desc")
-    .get();
+
+  const q = query(
+    collection(db, "comandas"),
+    where("fecha", ">=", Timestamp.fromDate(start)),
+    where("fecha", "<=", Timestamp.fromDate(end)),
+    orderBy("fecha", "desc"),
+  );
+
+  return getDocs(q);
 }

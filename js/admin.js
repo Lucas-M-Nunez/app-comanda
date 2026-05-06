@@ -1,3 +1,4 @@
+// import { onComandasSnapshot, onProductosSnapshot, addProducto, updateProducto, deleteProducto } from "./firebase-service.js";
 const ventasList = document.getElementById("ventas");
 const totalDiaHTML = document.getElementById("totalDia");
 const btnLimpiarVentas = document.getElementById("btn-limpiar-ventas");

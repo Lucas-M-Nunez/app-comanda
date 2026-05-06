@@ -1,3 +1,13 @@
+import { auth } from "./firebase-config.js";
+import { getUserProfile } from "./firebase-service.js";
+
+import {
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
+} from "https://www.gstatic.com/firebasejs/12.12.1/firebase-auth.js";
+// signInWithEmailAndPassword(auth, email, password);
+
 const loginScreen = document.getElementById("login-screen");
 const appScreen = document.getElementById("app-screen");
 const loginForm = document.getElementById("login-form");
@@ -27,16 +37,21 @@ function setUserInfo(user, role) {
 }
 
 function handleAuthState(user) {
+    console.log("USER:", user);
+
   if (!user) {
     showLogin();
     return;
   }
 
+    console.log("UID:", user.uid);
+
   getUserProfile(user.uid)
-    .then(doc => {
-      if (!doc.exists) {
-        loginError.textContent = "Usuario sin rol asignado. Configurá su perfil en Firestore.";
-        auth.signOut();
+    .then((doc) => {
+      if (!doc.exists()) {
+        loginError.textContent =
+          "Usuario sin rol asignado. Configurá su perfil en Firestore.";
+        signOut(auth);
         return;
       }
 
@@ -51,27 +66,26 @@ function handleAuthState(user) {
         window.pendingAuth = payload;
       }
     })
-    .catch(error => {
+    .catch((error) => {
       loginError.textContent = error.message;
-      auth.signOut();
+      signOut(auth);
     });
 }
 
-auth.onAuthStateChanged(handleAuthState);
+onAuthStateChanged(auth, handleAuthState);
 
-loginForm.addEventListener("submit", event => {
+loginForm.addEventListener("submit", (event) => {
   event.preventDefault();
   loginError.textContent = "";
 
   const email = emailInput.value.trim();
   const password = passwordInput.value.trim();
 
-  auth.signInWithEmailAndPassword(email, password)
-    .catch(error => {
-      loginError.textContent = error.message;
-    });
+  signInWithEmailAndPassword(auth, email, password).catch((error) => {
+    loginError.textContent = error.message;
+  });
 });
 
 btnLogout.addEventListener("click", () => {
-  auth.signOut();
+  signOut(auth);
 });
